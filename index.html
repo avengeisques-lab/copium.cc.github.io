@@ -2,234 +2,39 @@
 <html>
 <head>
   <title>Copium.cc</title>
-
   <style>
     body {
       margin: 0;
       font-family: Arial;
       background: #070707;
       color: white;
-      overflow-x: hidden;
-    }
-
-    .cursor-glow {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(255,0,150,0.15), transparent 70%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 0;
-    }
-
-    .header {
-      text-align: center;
-      padding: 30px;
-      font-size: 30px;
-    }
-
-    /* Top right account */
-    .account {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .account:hover {
-      color: white;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      flex-wrap: wrap;
-      padding: 40px;
-    }
-
-    .card {
-      background: rgba(20,20,20,0.9);
-      padding: 25px;
-      width: 300px;
-      border-radius: 16px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 0 25px rgba(255, 0, 150, 0.4);
-    }
-
-    .tag {
-      background: linear-gradient(45deg, #ff2d8d, #6a00ff);
-      padding: 5px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-bottom: 10px;
-      display: inline-block;
-    }
-
-    .title { font-size: 20px; }
-    .features { color: #aaa; margin: 15px 0; }
-    .price { margin-bottom: 10px; }
-
-    .btn {
-      background: #5865F2;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: rgba(20,20,20,0.95);
-      padding: 15px 25px;
-      border-radius: 8px;
-      opacity: 0;
-      transition: 0.3s;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* Login popup */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      background: #111;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      transition: 0.3s;
-    }
-
-    .popup.show {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    input {
-      padding: 10px;
-      margin: 10px;
-      width: 80%;
-      background: #222;
-      border: none;
-      color: white;
+      overflow: hidden;
     }
   </style>
 </head>
 
 <body>
 
-<div class="cursor-glow" id="glow"></div>
-
-<div class="header">Copium.cc External</div>
-
-<div class="account" id="account" onclick="openLogin()">Login</div>
-
-<div class="container">
-
-  <div class="card">
-    <div class="tag">Starter</div>
-    <div class="title">1 Week</div>
-    <div class="features">7 days access</div>
-    <div class="price">$3</div>
-    <button class="btn" onclick="buyNow()">Buy</button>
-  </div>
-
-  <div class="card">
-    <div class="tag">Popular</div>
-    <div class="title">1 Month</div>
-    <div class="features">30 days access</div>
-    <div class="price">$10</div>
-    <button class="btn" onclick="buyNow()">Buy</button>
-  </div>
-
-  <div class="card">
-    <div class="tag">Best</div>
-    <div class="title">Lifetime</div>
-    <div class="features">Forever access</div>
-    <div class="price">$20</div>
-    <button class="btn" onclick="buyNow()">Buy</button>
-  </div>
-
-</div>
-
-<div id="toast" class="toast"></div>
-
-<div id="loginPopup" class="popup">
-  <h3>Account Login</h3>
-  <input type="text" id="username" placeholder="Username"><br>
-  <input type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-</div>
+<div id="app"></div>
 
 <script>
-  const glow = document.getElementById('glow');
+/* basic blocking */
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.onkeydown = function(e){
+  if(e.keyCode==123 || (e.ctrlKey && e.keyCode==85)){return false;}
+};
 
-  document.addEventListener('mousemove', (e) => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top = e.clientY + 'px';
-  });
-
-  function showToast(msg) {
-    const toast = document.getElementById("toast");
-    toast.innerText = msg;
-    toast.classList.add("show");
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 1500);
+/* devtools detection */
+setInterval(function(){
+  if(window.outerWidth - window.innerWidth > 160){
+    document.body.innerHTML = "";
   }
+},1000);
 
-  function openLogin() {
-    document.getElementById("loginPopup").classList.add("show");
-  }
-
-  function login() {
-    const username = document.getElementById("username").value || "User";
-    localStorage.setItem("loggedIn", "true");
-    localStorage.setItem("username", username);
-
-    document.getElementById("account").innerText = username;
-    document.getElementById("loginPopup").classList.remove("show");
-
-    showToast("Logged in!");
-  }
-
-  function buyNow() {
-    if (!localStorage.getItem("loggedIn")) {
-      showToast("You need to login to buy first!");
-      return;
-    }
-
-    showToast("Redirecting...");
-    setTimeout(() => {
-      window.location.href = "https://discord.gg/2Nqb9ASA";
-    }, 1200);
-  }
-
-  // Load saved login
-  window.onload = () => {
-    if (localStorage.getItem("loggedIn")) {
-      document.getElementById("account").innerText =
-        localStorage.getItem("username") || "Account";
-    }
-  };
+/* encoded payload */
+eval(atob(`
+Y29uc3QgYXBwID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FwcCcpOwphcHAuaW5uZXJIVE1MID0gYAo8ZGl2IHN0eWxlPSJ0ZXh0LWFsaWduOmNlbnRlcjtwYWRkaW5nOjMwcHg7Zm9udC1zaXplOjMwcHg7Ij5Db3BpdW0uY2MgRXh0ZXJuYWw8L2Rpdj4KPGRpdiBpZD0iYWNjb3VudCIgc3R5bGU9InBvc2l0aW9uOmFic29sdXRlO3RvcDoyMHB4O3JpZ2h0OjMwcHg7Y3Vyc29yOnBvaW50ZXI7Y29sb3I6I2FhYTsiPkxvZ2luPC9kaXY+Cgo8ZGl2IHN0eWxlPSJkaXNwbGF5OmZsZXg7Z2FwOjIwcHg7anVzdGlmeS1jb250ZW50OmNlbnRlcjtwYWRkaW5nOjQwcHg7Ij4KICA8ZGl2IHN0eWxlPSJiYWNrZ3JvdW5kOiMxNDE0MTQ7cGFkZGluZzoyMHB4O2JvcmRlci1yYWRpdXM6MTBweDsiPgogICAgPGgyPjEgV2VlayAtICQzPC9oMj4KICAgIDxidXR0b24gb25jbGljaz0iYnV5KCkiPkJ1eTwvYnV0dG9uPgogIDwvZGl2PgogIDxkaXYgc3R5bGU9ImJhY2tncm91bmQ6IzE0MTQxNDtwYWRkaW5nOjIwcHg7Ym9yZGVyLXJhZGl1czoxMHB4OyI+CiAgICA8aDI+MSBNb250aCAtICQxMDwvaDI+CiAgICA8YnV0dG9uIG9uY2xpY2s9ImJ1eSgpIj5CdXk8L2J1dG9uPgogIDwvZGl2PgogIDxkaXYgc3R5bGU9ImJhY2tncm91bmQ6IzE0MTQxNDtwYWRkaW5nOjIwcHg7Ym9yZGVyLXJhZGl1czoxMHB4OyI+CiAgICA8aDI+TGlmZXRpbWUgLSAkMjA8L2gyPgogICAgPGJ1dHRvbiBvbmNsaWNrPSJidXkoKSI+QnV5PC9idXR0b24+CiAgPC9kaXY+CjwvZGl2PgoKY29uc3QgdG9hc3QgPSAoKSA9PiB7CiAgYWxlcnQoIkxvZ2luIHJlcXVpcmVkISIpOwp9OwoKZnVuY3Rpb24gYnV5KCl7CiAgaWYoIWxvY2FsU3RvcmFnZS5nZXRJdGVtKCdsb2dnZWQnKSl7CiAgICB0b2FzdCgpOwogICAgcmV0dXJuOwogIH0KICB3aW5kb3cubG9jYXRpb24gPSAiaHR0cHM6Ly9kaXNjb3JkLmdnLzJOcWI5QVNBIjsKfQoKZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImFjY291bnQiKS5vbmNsaWNrID0gKCkgPT4gewogIGNvbnN0IHVzZXIgPSBwcm9tcHQoIlVzZXJuYW1lIik7CiAgaWYodXNlcil7CiAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgnbG9nZ2VkJywndHJ1ZScpOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImFjY291bnQiKS5pbm5lclRleHQgPSB1c2VyOwogIH0KfTsKYDs=
+));
 </script>
 
 </body>
