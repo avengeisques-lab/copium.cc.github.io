@@ -2,39 +2,116 @@
 <html>
 <head>
   <title>Copium.cc</title>
+
   <style>
     body {
       margin: 0;
       font-family: Arial;
       background: #070707;
       color: white;
-      overflow: hidden;
+      overflow-x: hidden;
+    }
+
+    .header {
+      text-align: center;
+      padding: 30px;
+      font-size: 30px;
+    }
+
+    .account {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .card {
+      background: #141414;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px;
+      background: #5865F2;
+      border: none;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 
-<div id="app"></div>
+<div class="header">Copium.cc External</div>
+<div class="account" onclick="_0xlogin()">Login</div>
+
+<div class="container">
+  <div class="card">
+    <h2>1 Week - $3</h2>
+    <button onclick="_0xbuy()">Buy</button>
+  </div>
+
+  <div class="card">
+    <h2>1 Month - $10</h2>
+    <button onclick="_0xbuy()">Buy</button>
+  </div>
+
+  <div class="card">
+    <h2>Lifetime - $20</h2>
+    <button onclick="_0xbuy()">Buy</button>
+  </div>
+</div>
 
 <script>
-/* basic blocking */
+/* BLOCK BASIC INSPECT */
 document.addEventListener("contextmenu", e => e.preventDefault());
 document.onkeydown = function(e){
-  if(e.keyCode==123 || (e.ctrlKey && e.keyCode==85)){return false;}
+  if(e.keyCode==123 || (e.ctrlKey && e.keyCode==85)){
+    return false;
+  }
 };
 
-/* devtools detection */
-setInterval(function(){
+/* SIMPLE OBFUSCATION */
+function _0xmsg(x){alert(x)}
+
+/* LOGIN */
+function _0xlogin(){
+  let u = prompt("Username");
+  if(u){
+    localStorage.setItem("l","1");
+    document.querySelector(".account").innerText = u;
+  }
+}
+
+/* BUY */
+function _0xbuy(){
+  if(!localStorage.getItem("l")){
+    _0xmsg("You need to login to buy first!");
+    return;
+  }
+
+  _0xmsg("Redirecting...");
+  setTimeout(()=>{
+    location.href="https://discord.gg/2Nqb9ASA";
+  },1000);
+}
+
+/* DEVTOOLS DETECT */
+setInterval(()=>{
   if(window.outerWidth - window.innerWidth > 160){
     document.body.innerHTML = "";
   }
 },1000);
-
-/* encoded payload */
-eval(atob(`
-Y29uc3QgYXBwID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FwcCcpOwphcHAuaW5uZXJIVE1MID0gYAo8ZGl2IHN0eWxlPSJ0ZXh0LWFsaWduOmNlbnRlcjtwYWRkaW5nOjMwcHg7Zm9udC1zaXplOjMwcHg7Ij5Db3BpdW0uY2MgRXh0ZXJuYWw8L2Rpdj4KPGRpdiBpZD0iYWNjb3VudCIgc3R5bGU9InBvc2l0aW9uOmFic29sdXRlO3RvcDoyMHB4O3JpZ2h0OjMwcHg7Y3Vyc29yOnBvaW50ZXI7Y29sb3I6I2FhYTsiPkxvZ2luPC9kaXY+Cgo8ZGl2IHN0eWxlPSJkaXNwbGF5OmZsZXg7Z2FwOjIwcHg7anVzdGlmeS1jb250ZW50OmNlbnRlcjtwYWRkaW5nOjQwcHg7Ij4KICA8ZGl2IHN0eWxlPSJiYWNrZ3JvdW5kOiMxNDE0MTQ7cGFkZGluZzoyMHB4O2JvcmRlci1yYWRpdXM6MTBweDsiPgogICAgPGgyPjEgV2VlayAtICQzPC9oMj4KICAgIDxidXR0b24gb25jbGljaz0iYnV5KCkiPkJ1eTwvYnV0dG9uPgogIDwvZGl2PgogIDxkaXYgc3R5bGU9ImJhY2tncm91bmQ6IzE0MTQxNDtwYWRkaW5nOjIwcHg7Ym9yZGVyLXJhZGl1czoxMHB4OyI+CiAgICA8aDI+MSBNb250aCAtICQxMDwvaDI+CiAgICA8YnV0dG9uIG9uY2xpY2s9ImJ1eSgpIj5CdXk8L2J1dG9uPgogIDwvZGl2PgogIDxkaXYgc3R5bGU9ImJhY2tncm91bmQ6IzE0MTQxNDtwYWRkaW5nOjIwcHg7Ym9yZGVyLXJhZGl1czoxMHB4OyI+CiAgICA8aDI+TGlmZXRpbWUgLSAkMjA8L2gyPgogICAgPGJ1dHRvbiBvbmNsaWNrPSJidXkoKSI+QnV5PC9idXR0b24+CiAgPC9kaXY+CjwvZGl2PgoKY29uc3QgdG9hc3QgPSAoKSA9PiB7CiAgYWxlcnQoIkxvZ2luIHJlcXVpcmVkISIpOwp9OwoKZnVuY3Rpb24gYnV5KCl7CiAgaWYoIWxvY2FsU3RvcmFnZS5nZXRJdGVtKCdsb2dnZWQnKSl7CiAgICB0b2FzdCgpOwogICAgcmV0dXJuOwogIH0KICB3aW5kb3cubG9jYXRpb24gPSAiaHR0cHM6Ly9kaXNjb3JkLmdnLzJOcWI5QVNBIjsKfQoKZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImFjY291bnQiKS5vbmNsaWNrID0gKCkgPT4gewogIGNvbnN0IHVzZXIgPSBwcm9tcHQoIlVzZXJuYW1lIik7CiAgaWYodXNlcil7CiAgICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgnbG9nZ2VkJywndHJ1ZScpOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImFjY291bnQiKS5pbm5lclRleHQgPSB1c2VyOwogIH0KfTsKYDs=
-));
 </script>
 
 </body>
