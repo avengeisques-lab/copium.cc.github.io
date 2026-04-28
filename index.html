@@ -28,18 +28,18 @@
       font-size: 30px;
     }
 
-    .login-bar {
-      text-align: center;
-      margin-top: 10px;
+    /* Top right account */
+    .account {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 14px;
     }
 
-    .login-btn {
-      background: #ff2d8d;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
+    .account:hover {
       color: white;
-      cursor: pointer;
     }
 
     .container {
@@ -69,23 +69,13 @@
       padding: 5px 12px;
       border-radius: 6px;
       font-size: 12px;
+      margin-bottom: 10px;
       display: inline-block;
-      margin-bottom: 10px;
     }
 
-    .title {
-      font-size: 20px;
-    }
-
-    .features {
-      color: #aaa;
-      margin: 15px 0;
-    }
-
-    .price {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
+    .title { font-size: 20px; }
+    .features { color: #aaa; margin: 15px 0; }
+    .price { margin-bottom: 10px; }
 
     .btn {
       background: #5865F2;
@@ -126,7 +116,6 @@
       border-radius: 10px;
       text-align: center;
       transition: 0.3s;
-      z-index: 999;
     }
 
     .popup.show {
@@ -141,7 +130,6 @@
       border: none;
       color: white;
     }
-
   </style>
 </head>
 
@@ -151,9 +139,7 @@
 
 <div class="header">Copium.cc External</div>
 
-<div class="login-bar">
-  <button class="login-btn" onclick="openLogin()">Login</button>
-</div>
+<div class="account" id="account" onclick="openLogin()">Login</div>
 
 <div class="container">
 
@@ -183,21 +169,18 @@
 
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- Login Popup -->
 <div id="loginPopup" class="popup">
-  <h3>Login</h3>
-  <input type="text" placeholder="Username"><br>
+  <h3>Account Login</h3>
+  <input type="text" id="username" placeholder="Username"><br>
   <input type="password" placeholder="Password"><br>
   <button onclick="login()">Login</button>
 </div>
 
 <script>
-  let loggedIn = localStorage.getItem("loggedIn");
-
   const glow = document.getElementById('glow');
+
   document.addEventListener('mousemove', (e) => {
     glow.style.left = e.clientX + 'px';
     glow.style.top = e.clientY + 'px';
@@ -218,8 +201,13 @@
   }
 
   function login() {
+    const username = document.getElementById("username").value || "User";
     localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("username", username);
+
+    document.getElementById("account").innerText = username;
     document.getElementById("loginPopup").classList.remove("show");
+
     showToast("Logged in!");
   }
 
@@ -229,11 +217,19 @@
       return;
     }
 
-    showToast("Redirecting to Discord...");
+    showToast("Redirecting...");
     setTimeout(() => {
       window.location.href = "https://discord.gg/2Nqb9ASA";
     }, 1200);
   }
+
+  // Load saved login
+  window.onload = () => {
+    if (localStorage.getItem("loggedIn")) {
+      document.getElementById("account").innerText =
+        localStorage.getItem("username") || "Account";
+    }
+  };
 </script>
 
 </body>
