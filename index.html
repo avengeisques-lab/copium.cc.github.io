@@ -7,50 +7,138 @@
       background: #0a0a0a;
       color: white;
       font-family: Arial;
-      text-align: center;
       margin: 0;
     }
 
-    .container {
-      margin-top: 120px;
+    .header {
+      text-align: center;
+      padding: 30px;
+      font-size: 32px;
+      border-bottom: 1px solid #222;
     }
 
-    h1 {
-      font-size: 40px;
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 60px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #141414;
+      padding: 25px;
+      width: 300px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 120, 0.2);
+    }
+
+    .title {
+      font-size: 22px;
+      margin-bottom: 10px;
     }
 
     .features {
-      margin: 30px 0;
+      font-size: 14px;
       color: #aaa;
-      line-height: 1.8;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .price {
+      font-size: 20px;
+      margin-bottom: 15px;
+      font-weight: bold;
     }
 
     .btn {
       background: #5865F2;
-      padding: 15px 30px;
       border: none;
-      border-radius: 8px;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
       color: white;
-      font-size: 16px;
       cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: #6d7cff;
+    }
+
+    .tag {
+      background: #ff2d8d;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      display: inline-block;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>Copium.cc Overlay</h1>
+<div class="header">Copium.cc External</div>
 
-  <div class="features">
-    • Clean UI Overlay<br>
-    • Real-time visuals<br>
-    • Lightweight & external
+<div class="container">
+
+  <!-- 1 Week Key -->
+  <div class="card">
+    <div class="tag">Starter</div>
+    <div class="title">1 Week Key</div>
+
+    <div class="features">
+      • Full overlay access<br>
+      • All core features<br>
+      • 7 days usage
+    </div>
+
+    <div class="price">$3.00</div>
+
+    <button class="btn" onclick="window.location.href='https://discord.gg/2Nqb9ASA'">
+      Buy
+    </button>
   </div>
 
-  <button class="btn" onclick="window.location.href='PUT_YOUR_DISCORD_LINK_HERE'">
-    Join Discord
-  </button>
+  <!-- 1 Month Key -->
+  <div class="card">
+    <div class="tag">Popular</div>
+    <div class="title">1 Month Key</div>
+
+    <div class="features">
+      • Cheat Access<br>
+      • Priority updates<br>
+      • 30 days usage
+    </div>
+
+    <div class="price">$10.00</div>
+
+    <button class="btn" onclick="window.location.href='https://discord.gg/2Nqb9ASA'">
+      Buy
+    </button>
+  </div>
+
+  <!-- Lifetime Key -->
+  <div class="card">
+    <div class="tag">Best Value</div>
+    <div class="title">Lifetime Key</div>
+
+    <div class="features">
+      • Permanent access<br>
+      • All future updates<br>
+      • One-time purchase
+    </div>
+
+    <div class="price">$20.00</div>
+
+    <button class="btn" onclick="window.location.href='https://discord.gg/2Nqb9ASA'">
+      Buy
+    </button>
+  </div>
+
 </div>
 
 </body>
