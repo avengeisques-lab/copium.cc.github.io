@@ -1,246 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <title>Copium.cc</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #050505;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    /* animated gradient bg */
-    body::before {
-      content: "";
-      position: fixed;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, #ff2d8d33, transparent 40%);
-      animation: moveBg 10s linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes moveBg {
-      0% { transform: translate(-25%, -25%); }
-      50% { transform: translate(-10%, -10%); }
-      100% { transform: translate(-25%, -25%); }
-    }
-
-    .cursor {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,0,150,0.2), transparent 70%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-    }
-
-    .header {
-      text-align: center;
-      padding: 30px;
-      font-size: 32px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .account {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: #aaa;
-      cursor: pointer;
-      z-index: 2;
-      transition: 0.3s;
-    }
-
-    .account:hover {
-      color: white;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 40px;
-      z-index: 2;
-      position: relative;
-    }
-
-    .card {
-      background: rgba(20,20,20,0.9);
-      padding: 25px;
-      width: 280px;
-      border-radius: 16px;
-      text-align: center;
-      transition: 0.3s;
-      transform-style: preserve-3d;
-    }
-
-    .card:hover {
-      transform: scale(1.05) rotateX(5deg) rotateY(-5deg);
-      box-shadow: 0 0 30px rgba(255,0,150,0.5);
-    }
-
-    .title {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      margin-bottom: 15px;
-      color: #bbb;
-    }
-
-    .btn {
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      background: linear-gradient(45deg, #ff2d8d, #6a00ff);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff2d8d;
-    }
-
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      background: #111;
-      padding: 30px;
-      border-radius: 10px;
-      transition: 0.3s;
-      z-index: 3;
-    }
-
-    .popup.show {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    input {
-      padding: 10px;
-      margin: 10px;
-      width: 80%;
-      background: #222;
-      border: none;
-      color: white;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #111;
-      padding: 15px 25px;
-      border-radius: 8px;
-      opacity: 0;
-      transition: 0.3s;
-      z-index: 3;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copium - Premium Software Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-gradient { background: radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.15) 0%, rgba(15, 23, 42, 0) 70%); }
+    </style>
 </head>
+<body class="bg-[#0f172a] text-slate-200 selection:bg-blue-500/30">
 
-<body>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 left-0 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+                    <i data-lucide="zap" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">Copium</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#features" class="hover:text-blue-400 transition-colors">Features</a>
+                <a href="#pricing" class="hover:text-blue-400 transition-colors">Pricing</a>
+                <a href="#showcase" class="hover:text-blue-400 transition-colors">Showcase</a>
+                <a href="https://github.com/yourusername/copium" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all shadow-lg shadow-blue-600/20">Get Started</a>
+            </div>
+        </div>
+    </nav>
 
-<div class="cursor" id="cursor"></div>
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-24 overflow-hidden hero-gradient">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-8">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                V2.0 NOW AVAILABLE
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
+                Enhance your experience with <br/><span class="gradient-text">Copium Elite</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                The ultimate companion for high-performance enthusiasts. Built for speed, reliability, and precision. Join thousands of satisfied users worldwide.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#pricing" class="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-xl shadow-blue-600/25 flex items-center justify-center gap-2">
+                    Purchase License <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </a>
+                <a href="#features" class="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2">
+                    Explore Features <i data-lucide="mouse-pointer-2" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-<div class="header">Copium.cc External</div>
-<div class="account" id="account" onclick="openLogin()">Login</div>
+    <!-- Stats Section -->
+    <section class="py-12 border-y border-white/5 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-white mb-1">10k+</div>
+                <div class="text-sm text-slate-500 uppercase tracking-widest font-semibold">Active Users</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold text-white mb-1">99.9%</div>
+                <div class="text-sm text-slate-500 uppercase tracking-widest font-semibold">Uptime</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                <div class="text-sm text-slate-500 uppercase tracking-widest font-semibold">Live Support</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold text-white mb-1">0ms</div>
+                <div class="text-sm text-slate-500 uppercase tracking-widest font-semibold">Latency</div>
+            </div>
+        </div>
+    </section>
 
-<div class="container">
+    <!-- Features Section -->
+    <section id="features" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Unmatched Performance</h2>
+                <p class="text-slate-400 max-w-xl mx-auto">Designed with cutting-edge technology to give you the competitive edge you deserve.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-blue-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                        <i data-lucide="cpu" class="text-blue-500 group-hover:text-white w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Ultra Optimized</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Built with high-performance C++ core for zero performance impact on your system.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-blue-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600 transition-colors">
+                        <i data-lucide="shield-check" class="text-purple-500 group-hover:text-white w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Secure & Stealth</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Advanced encryption and kernel-level protection keeps you safe and undetected.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-3xl bg-slate-900/50 border border-white/5 hover:border-blue-500/50 transition-all group">
+                    <div class="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors">
+                        <i data-lucide="layout" class="text-emerald-500 group-hover:text-white w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Custom UI</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Fully customizable interface with real-time rendering and modern design elements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <div class="card">
-    <div class="title">1 Week</div>
-    <div class="price">$3</div>
-    <button class="btn" onclick="buy()">Buy</button>
-  </div>
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Simple Pricing</h2>
+                <p class="text-slate-400 max-w-xl mx-auto">Choose the plan that fits your needs. No hidden fees.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Tier 1 -->
+                <div class="p-8 rounded-3xl bg-slate-900/50 border border-white/5 flex flex-col">
+                    <h4 class="text-slate-400 font-semibold mb-2">Basic</h4>
+                    <div class="text-4xl font-bold text-white mb-6">$9.99<span class="text-lg text-slate-500 font-normal">/month</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-slate-300">
+                            <i data-lucide="check-circle-2" class="text-blue-500 w-5 h-5"></i> All Standard Features
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300">
+                            <i data-lucide="check-circle-2" class="text-blue-500 w-5 h-5"></i> 24/7 Support
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl transition-all border border-white/10">Subscribe</button>
+                </div>
+                <!-- Tier 2 (Featured) -->
+                <div class="p-8 rounded-3xl bg-blue-600 border border-blue-400 relative flex flex-col transform scale-105 shadow-2xl shadow-blue-600/20">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-blue-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Most Popular</div>
+                    <h4 class="text-blue-100 font-semibold mb-2">Lifetime</h4>
+                    <div class="text-4xl font-bold text-white mb-6">$49.99<span class="text-lg text-blue-200 font-normal">/once</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-white font-medium">
+                            <i data-lucide="check-circle-2" class="text-white w-5 h-5"></i> Lifetime Updates
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-white font-medium">
+                            <i data-lucide="check-circle-2" class="text-white w-5 h-5"></i> Priority Discord Access
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-white font-medium">
+                            <i data-lucide="check-circle-2" class="text-white w-5 h-5"></i> Custom Beta Builds
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 bg-white text-blue-600 font-bold rounded-xl hover:bg-slate-100 transition-all">Buy Now</button>
+                </div>
+                <!-- Tier 3 -->
+                <div class="p-8 rounded-3xl bg-slate-900/50 border border-white/5 flex flex-col">
+                    <h4 class="text-slate-400 font-semibold mb-2">Pro</h4>
+                    <div class="text-4xl font-bold text-white mb-6">$19.99<span class="text-lg text-slate-500 font-normal">/3 months</span></div>
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-sm text-slate-300">
+                            <i data-lucide="check-circle-2" class="text-blue-500 w-5 h-5"></i> All Standard Features
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300">
+                            <i data-lucide="check-circle-2" class="text-blue-500 w-5 h-5"></i> Priority Support
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 bg-white/5 hover:bg-white/10 text-white font-semibold rounded-xl transition-all border border-white/10">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <div class="card">
-    <div class="title">1 Month</div>
-    <div class="price">$10</div>
-    <button class="btn" onclick="buy()">Buy</button>
-  </div>
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="zap" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="text-xl font-bold text-white tracking-tight">Copium</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+            </div>
+            <div class="text-slate-500 text-sm">
+                &copy; 2024 Copium Software. All rights reserved.
+            </div>
+        </div>
+    </footer>
 
-  <div class="card">
-    <div class="title">Lifetime</div>
-    <div class="price">$20</div>
-    <button class="btn" onclick="buy()">Buy</button>
-  </div>
-
-</div>
-
-<div id="popup" class="popup">
-  <h3>Login</h3>
-  <input id="user" placeholder="Username"><br>
-  <input type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-const cursor = document.getElementById("cursor");
-
-document.addEventListener("mousemove", e => {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
-
-function showToast(msg){
-  const t = document.getElementById("toast");
-  t.innerText = msg;
-  t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1500);
-}
-
-function openLogin(){
-  document.getElementById("popup").classList.add("show");
-}
-
-function login(){
-  const u = document.getElementById("user").value || "User";
-  localStorage.setItem("logged","1");
-  localStorage.setItem("user",u);
-  document.getElementById("account").innerText = u;
-  document.getElementById("popup").classList.remove("show");
-  showToast("Logged in");
-}
-
-function buy(){
-  if(!localStorage.getItem("logged")){
-    showToast("You need to login to buy first!");
-    return;
-  }
-
-  showToast("Redirecting...");
-  setTimeout(()=>{
-    window.location.href = "https://discord.gg/2Nqb9ASA";
-  },1000);
-}
-
-window.onload = () => {
-  if(localStorage.getItem("logged")){
-    document.getElementById("account").innerText =
-      localStorage.getItem("user");
-  }
-};
-</script>
-
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
