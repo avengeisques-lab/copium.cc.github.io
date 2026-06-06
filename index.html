@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pactuals Recoil | Premium Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0a0d12;
+            --bg-card: #111622;
+            --accent-blue: #00f0ff;
+            --accent-glow: rgba(0, 240, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .badge {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 span {
+            color: var(--accent-blue);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1max));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: left;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Pricing Card */
+        .pricing-card {
+            background: linear-gradient(135deg, #111622 0%, #0d111a 100%);
+            border: 1px solid var(--accent-blue);
+            box-shadow: 0 0 30px var(--accent-glow);
+            padding: 3rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .price-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: normal;
+            font-weight: 400;
+        }
+
+        .price-tagline {
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            width: 100%;
+            background: var(--accent-blue);
+            color: var(--bg-main);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .cta-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.01);
+        }
+
+        .cta-btn:active {
+            transform: scale(0.99);
+        }
+
+        .features-list {
+            margin-top: 2rem;
+            text-align: left;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .features-list item {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .features-list item::before {
+            content: "✓";
+            color: var(--accent-blue);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .hero { padding: 4rem 1rem; }
+            .pricing-card { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Pactuals<span>Recoil</span></div>
+    </nav>
+
+    <main class="hero">
+        <div class="badge">Undetected & Humanized</div>
+        <h1>Perfect Control.<br><span>Zero Hassle.</span></h1>
+        <p class="subtitle">An ultra-lightweight, high-performance script engineered for seamless consistency without modifying your game files.</p>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>Humanized Output</h3>
+                <p>Features micro-variations and natural curve smoothing to blend perfectly with authentic human inputs.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Lightweight Architecture</h3>
+                <p>Zero performance impact. Built to run quietly in the background without hogging system resources.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Instant Setup</h3>
+                <p>No complex installation routines. Run the executable, set your preferences, and you are ready to go.</p>
+            </div>
+        </div>
+
+        <div class="pricing-card">
+            <div class="price-title">Lifetime Access</div>
+            <div class="price">$5<span>.00</span></div>
+            <div class="price-tagline">One-time payment</div>
+            
+            <!-- Replace '#' with your actual sellix/shopper/stripe payment link -->
+            <a href="#" class="cta-btn">Purchase Access Now</a>
+
+            <div class="features-list">
+                <div class="item">Lifetime software updates</div>
+                <div class="item">Access to all future profiles</div>
+                <div class="item">Discord community support</div>
+                <div class="item">Clean, secure code structure</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Pactuals Recoil. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
