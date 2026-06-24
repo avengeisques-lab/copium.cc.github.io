@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // SYSTEM ACCESS</title>
+    <style>
+        /* --- CORE CONFIGURATION & RESET --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050508;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d1d5db;
+        }
+
+        /* --- BACKGROUND CANVAS --- */
+        #canvas-ambient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- INTERFACE CONTAINER --- */
+        .viewport {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(16, 16, 28, 0.4) 0%, rgba(5, 5, 8, 0.8) 100%);
+            padding: 20px;
+        }
+
+        /* --- HARDWARE ACCELERATED ANIMATIONS --- */
+        @keyframes scanline-anim {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes glitch-frame {
+            0% { clip-path: inset(40% 0 61% 0); }
+            20% { clip-path: inset(92% 0 1% 0); }
+            40% { clip-path: inset(15% 0 80% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(3% 0 92% 0); }
+            100% { clip-path: inset(40% 0 61% 0); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { border-color: rgba(0, 255, 136, 0.2); box-shadow: 0 0 20px rgba(0, 255, 136, 0.05); }
+            50% { border-color: rgba(0, 255, 136, 0.6); box-shadow: 0 0 40px rgba(0, 255, 136, 0.2); }
+        }
+
+        @keyframes panel-entrance {
+            0% { opacity: 0; transform: scale(0.95) translateY(30px); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
+        /* --- SCANLINE EFFECT LAYER --- */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+        }
+
+        /* --- THE MAIN PANEL --- */
+        .mainframe {
+            background: rgba(10, 11, 16, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+            width: 100%;
+            max-width: 540px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            animation: panel-entrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards, pulse-glow 6s infinite ease-in-out;
+            position: relative;
+        }
+
+        /* --- CORNER BRACKETS --- */
+        .mainframe::before, .mainframe::after, .corner-b::before, .corner-b::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: #00ff88;
+            border-style: solid;
+            pointer-events: none;
+        }
+        .mainframe::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .mainframe::after { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+        .corner-b::before { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+        .corner-b::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+        /* --- HEADER SECTIONS --- */
+        .header-block {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+
+        .glitch-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .system-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-left: 3px solid #00ff88;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .status-pulse {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff88;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+            animation: pulse-dot-anim 1.8s infinite;
+        }
+
+        @keyframes pulse-dot-anim {
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- CONSOLE OUTPUT AREA --- */
+        .console-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 3px;
+            height: 110px;
+            overflow-y: hidden;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: #8a9fc2;
+            margin-bottom: 30px;
+        }
+
+        .console-line {
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid transparent;
+            margin-bottom: 4px;
+        }
+
+        .console-line span {
+            color: #00ff88;
+        }
+
+        /* --- BUTTON MATRIX --- */
+        .action-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .interactive-row {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            width: 100%;
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 255, 136, 0.02) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            padding: 16px 20px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: left;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn::after {
+            content: '//_';
+            color: #00ff88;
+            opacity: 0.5;
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-row:hover .nav-btn {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border-color: #00ff88;
+            color: #00ff88;
+            box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.1);
+        }
+
+        .interactive-row:hover .nav-btn::after {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        .btn-secondary .nav-btn {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-secondary .nav-btn::after {
+            content: 'ERR_';
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover .nav-btn {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+
+        /* --- FOOTER PARAMETERS --- */
+        .meta-footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-ambient"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="viewport">
+        <div class="mainframe">
+            <div class="corner-b"></div>
+
+            <!-- Header Panel -->
+            <div class="header-block">
+                <div class="glitch-title">NEXUS_FRAMEWORK</div>
+                <div class="system-status">
+                    <div>MODULE: ACTIVE_CORE</div>
+                    <div class="status-pulse">
+                        <div class="pulse-dot"></div>
+                        <span>ONLINE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Terminal Simulated Output -->
+            <div class="console-box" id="consoleTerminal">
+                <div class="console-line"><span>[SYS]</span> Initialize core initialization handshake...</div>
+                <div class="console-line"><span>[SEC]</span> Security layer integrity verified (HMAC-SHA256)</div>
+                <div class="console-line"><span>[AUTH]</span> KeyAuth entry point mapped successfully.</div>
+            </div>
+
+            <!-- Interactive Triggers -->
+            <div class="action-grid">
+                <div class="interactive-row">
+                    <button class="nav-btn" onclick="window.location.href='#'">Launch Core Loader</button>
+                </div>
+                <div class="interactive-row btn-secondary">
+                    <button class="nav-btn" onclick="window.location.href='#'">KeyAuth Control Panel</button>
+                </div>
+            </div>
+
+            <!-- Footer Details -->
+            <div class="meta-footer">
+                <div>LOC: SECURE_HOST</div>
+                <div id="liveClock">STABLE // 00:00:00</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND ENGINE & TERMINAL CONTROLLER -->
+    <script>
+        // --- 1. LIVE CONSOLE ANIMATION ENGINE ---
+        const consoleLines = [
+            "[OK] Global network routing established.",
+            "[SYS] Memory spaces segmented safely.",
+            "[SEC] HWID structure signature matched.",
+            "[AUTH] Dynamic session token validated.",
+            "[SYS] Daemon interface listening for hook events.",
+            "[OK] Resource payload ready for execution context."
+        ];
+        
+        const terminal = document.getElementById("consoleTerminal");
+        
+        setInterval(() => {
+            const randomMsg = consoleLines[Math.floor(Math.random() * consoleLines.length)];
+            const line = document.createElement("div");
+            line.className = "console-line";
+            line.innerHTML = `<span>[LIVE]</span> ${randomMsg}`;
+            terminal.appendChild(line);
+            
+            if (terminal.children.length > 5) {
+                terminal.removeChild(terminal.children[0]);
+            }
+        }, 3200);
+
+        // --- 2. LIVE CLOCK CONTROLLER ---
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            document.getElementById("liveClock").innerText = `STABLE // ${timeStr}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- 3. CANVAS HIGH-PERFORMANCE INTERACTIVE ENGINE ---
+        const canvas = document.getElementById("canvas-ambient");
+        const ctx = canvas.getContext("2d");
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener("resize", () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const particleCount = 75;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 2 + 1;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 255, 136, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function renderLoop() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw node networks
+            for (let i = 0; i < particles.length; i++) {
+                const p1 = particles[i];
+                p1.update();
+                p1.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 255, 136, ${0.15 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(renderLoop);
+        }
+        renderLoop();
+    </script>
+</body>
+</html>
